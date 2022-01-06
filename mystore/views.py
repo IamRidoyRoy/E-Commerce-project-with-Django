@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, render, get_list_or_404
-
 from carts.models import CartItem
 from carts.views import cart
 from .models import Product
 from category.models import Category
 from carts.views import _cart_id
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # Create your views here.
 
 def mystore(request, category_slug = None):
@@ -14,13 +14,20 @@ def mystore(request, category_slug = None):
     if category_slug != None:
         categories = get_object_or_404(Category, slug = category_slug)
         products = Product.objects.filter(category=categories, is_available= True)
+        paginate = Paginator(products, 6)
+        page = request.GET.get('page')
+        paged_product = paginate.get_page(page)
         product_count = products.count()
     else:
         products = Product.objects.all().filter(is_available=True)
+        paginate = Paginator(products, 6)
+        page = request.GET.get('page')
+        paged_product = paginate.get_page(page)
         product_count = products.count()
 
+
     context = {
-        'products': products,
+        'products': paged_product,
         'product_count' : product_count,
     }
 
