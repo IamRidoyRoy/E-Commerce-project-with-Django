@@ -19,7 +19,7 @@ def mystore(request, category_slug = None):
         paged_product = paginate.get_page(page)
         product_count = products.count()
     else:
-        products = Product.objects.all().filter(is_available=True)
+        products = Product.objects.all().filter(is_available=True).order_by('id')
         paginate = Paginator(products, 6)
         page = request.GET.get('page')
         paged_product = paginate.get_page(page)
