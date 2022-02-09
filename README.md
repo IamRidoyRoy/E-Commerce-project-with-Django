@@ -24,3 +24,9 @@ Done!
 
 ```
     
+## Tech Stack
+
+**Client:** HTML5, CSS3, Bootstrap5, JavaScript
+
+**Server:** Python, Django 
+
