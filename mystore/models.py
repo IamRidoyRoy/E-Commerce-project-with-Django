@@ -1,4 +1,5 @@
 from tkinter import CASCADE
+from turtle import color
 from django.db import models
 from django.db.models.fields.related import ForeignKey
 
@@ -26,6 +27,14 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
 
+# Create variation manager 
+class VariationManager(models.Manager):
+    def colors(self):
+        return super(VariationManager, self).filter(variation_category='color', is_active = True)
+    
+    def sizes(self):
+        return super(VariationManager, self).filter(variation_category='size', is_active =True)
+
 # Create a tuple for drop down choices 
 variation_category_choice = (
     ('color', 'color'),
@@ -38,6 +47,8 @@ class Variation(models.Model):
     variation_value     = models.CharField(max_length=100)
     is_active           = models.BooleanField(default=True) 
     created_date        = models.DateTimeField(auto_now=True)
+
+    object = VariationManager()
 
     def __unicode__(self):
         return self.product
