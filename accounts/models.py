@@ -31,7 +31,6 @@ class MyAcccountManager(BaseUserManager):
             last_name=last_name
 
         )
-
         user.is_admin = True
         user.is_active = True
         user.is_staff = True
@@ -58,7 +57,7 @@ class Account(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
-    object = MyAcccountManager()
+    objects = MyAcccountManager()
 
     def __str__(self):
         return self.email
