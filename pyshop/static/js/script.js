@@ -61,7 +61,7 @@ $(document).ready(function () {
 // Query for message alert dismiss
 setTimeout(function () {
     $('#message').fadeOut('slow')
-}, 5000)
+}, 10000)
 
 
 

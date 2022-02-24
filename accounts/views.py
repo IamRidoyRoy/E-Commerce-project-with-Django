@@ -2,8 +2,8 @@
 import email
 from email import message
 from email.policy import default
-from click import get_current_context
 import django
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 from .models import Account
@@ -52,7 +52,7 @@ def register(request):
             send_email.send()
 
             messages.success(
-                request, 'Congratulations! Registration successful')
+                request, 'Registration successful! Please check email to Activate.')
             return redirect('register')
 
     else:
@@ -85,3 +85,22 @@ def logout(request):
     auth.logout(request)
     messages.success(request, 'You are logged out.')
     return redirect('login')
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Account._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(
+            request, 'Congratulations! Your accoutnt is Aactivated')
+        return redirect('login')
+
+    else:
+        messages.error(request, "Invalid activation link! Try again.")
+        return redirect('register')
