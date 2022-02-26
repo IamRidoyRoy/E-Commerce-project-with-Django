@@ -51,9 +51,9 @@ def register(request):
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
 
-            messages.success(
-                request, 'Registration successful! Please check email to Activate.')
-            return redirect('register')
+            # messages.success(
+            #     request, 'Thanks for Registration! Please check Email to Activate.')
+            return redirect('/accounts/login/?command=verification&email&email='+email)
 
     else:
         form = RegistrationForm()
@@ -104,3 +104,8 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, "Invalid activation link! Try again.")
         return redirect('register')
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    return render(request, 'accounts/dashboard.html')

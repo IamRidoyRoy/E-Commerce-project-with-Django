@@ -4,8 +4,7 @@
 
 # E-Commerce with Django 
 
-This is a full-featured E-Commerce website with cart, pagination, payment gateway, search, rating, review functionality, and so on.
-
+This is a full-featured E-Commerce website with Cart, Pagination, Registration, Login, Logout, Dashboard, Email verification, Message alert, Payment gateway, Search, Rating, Review functionality, and so on.
 
 ## Installation
 
