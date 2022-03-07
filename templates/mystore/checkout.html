@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title mb4">Billing Address</h1>
-                        <form class="form-row" action="">
+                        <form class="form-row" action="" method="POST">
                             <div class="form-row">
                                 <div class="col form-group">
                                     <label for="">First Name</label>
@@ -62,7 +62,7 @@
                                 <label for="">Order Note (Optional)</label>
                                 <textarea name="order_note" id="" rows="2" class="form-control"></textarea>
                             </div>
-                        </form>
+
                     </div>
                 </div> <!-- card.// -->
 
@@ -120,8 +120,9 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                        <a href="./place-order.html" class="btn btn-primary btn-block"> Place order </a>
+                        <button type="submit" name="submit" class="btn btn-primary btn-block">Place order</button>
                         <a href="{% url 'mystore' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                        </form>
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->
 
