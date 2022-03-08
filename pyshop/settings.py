@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'category',
     'accounts',
     'mystore',
-    'carts'
+    'carts',
+    'orders',
 
 ]
 
