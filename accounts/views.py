@@ -17,6 +17,7 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from carts.views import _cart_id, cart
 from carts.models import Cart, CartItem
+import requests
 
 # For email verifications
 from django.contrib.sites.shortcuts import get_current_site
@@ -122,7 +123,17 @@ def login(request):
 
             auth.login(request, user)
             # messages.success(request, 'You are logged in')
-            return redirect('dashboard')
+            # ?next=/cart/checkout/ - to redirect next page
+            url = request.META.get('HTTP_REFERER')
+            try:
+                query = requests.utils.urlparse(url).query
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)
+            except:
+                return redirect('dashboard')
+
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
