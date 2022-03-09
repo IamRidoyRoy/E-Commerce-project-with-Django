@@ -13,7 +13,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title mb4">Billing Address</h1>
-                        <form class="form-row" action="" method="POST">
+                        <form action="{% url 'place_order' %}" method="POST">
+                            {% csrf_token %}
                             <div class="form-row">
                                 <div class="col form-group">
                                     <label for="">First Name</label>
@@ -37,11 +38,11 @@
                             <div class="form-row">
                                 <div class="col form-group">
                                     <label for="">Address Line-1</label>
-                                    <input type="text" name="address-1" class="form-control" required>
+                                    <input type="text" name="address_line_1" class="form-control" required>
                                 </div>
                                 <div class="col form-group">
                                     <label for="">Address Line-2</label>
-                                    <input type="text" name="address-2" class="form-control">
+                                    <input type="text" name="address_line_2" class="form-control">
                                 </div>
                             </div>
                             <div class="form-row">
@@ -50,8 +51,8 @@
                                     <input type="text" name="city" class="form-control" required>
                                 </div>
                                 <div class="col form-group">
-                                    <label for="">Division</label>
-                                    <input type="text" name="division" class="form-control" required>
+                                    <label for="">State</label>
+                                    <input type="text" name="state" class="form-control" required>
                                 </div>
                                 <div class="col form-group">
                                     <label for="">Country</label>
