@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 import datetime
+import json
+from flask import request
+from itsdangerous import json
 
 from carts.models import CartItem
 from orders.models import Order, Payment
@@ -13,6 +16,25 @@ from .forms import OrderForm
 
 
 def payments(request):
+    body = json.loads(request.body)
+    print(body)
+    order = Order.objects.get(
+        user=request.user, is_ordered=False, order_number=body['orderID'])
+
+    # Store transaction details inside Payment model
+    payment = Payment(
+        user=request.user,
+        payment_id=body['transID'],
+        payment_method=body['payment_method'],
+        amount_paid=order.order_total,
+        status=body['status'],
+    )
+    payment.save()
+
+    order.payment = payment
+    order.is_ordered = True
+    order.save()
+
     return render(request, 'orders/payments.html')
 
 # Place order details

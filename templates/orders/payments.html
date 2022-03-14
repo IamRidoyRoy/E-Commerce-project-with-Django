@@ -129,7 +129,27 @@
 <!-- Paypal Scripts  -->
 <script>
 
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     var amount = "{{ grand_total }}"
+    var url = "{% url 'payments' %}"
+    var csrftoken = getCookie('csrftoken');
+    var orderID = "{{ order.order_number }}";
+    var payment_method = 'PayPal';
 
     function initPayPalButton() {
         paypal.Buttons({
@@ -143,9 +163,9 @@
             createOrder: function (data, actions) {
                 return actions.order.create({
                     purchase_units: [{
-                        "amount": {
-                            "currency_code": "USD",
-                            "value": amount,
+                        amount: {
+                            // "currency_code": "USD",
+                            value: amount,
                         }
                     }]
                 });
@@ -153,9 +173,33 @@
 
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (orderData) {
-                    console.log(orderData)
+                    console.log(orderData);
+
                     // Full available details
-                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    sendData();
+                    function sendData() {
+                        fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-type": "application/json",
+                                "X-CSRFToken": csrftoken,
+                            },
+                            body: JSON.stringify({
+                                orderID: orderID,
+                                transID: orderData.id,
+                                payment_method: payment_method,
+                                status: orderData.status,
+                            }),
+                        })
+                        // .then(response => response.json())
+                        // .then(data => {
+                        //     console.log('Success:', data);
+                        // })
+                        // .catch((error) => {
+                        //     console.error('Error:', error);
+                        // });
+                    }
 
                     // Show a success message within this page, e.g.
                     const element = document.getElementById('paypal-button-container');
