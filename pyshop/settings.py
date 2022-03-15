@@ -148,7 +148,7 @@ MESSAGE_TAGS = {
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'banglakontho24mailbox@gmail.com'
-EMAIL_HOST_PASSWORD = '!@#123HridoyRoy24'
+EMAIL_HOST_PASSWORD = '!@#123HridoyRoy244'
 EMAIL_USE_TLS = True
 
 # Smtp configurations done!
