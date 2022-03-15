@@ -1,3 +1,4 @@
+from code import interact
 from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -8,6 +9,7 @@ from flask import request
 from itsdangerous import json
 
 from carts.models import CartItem
+from mystore.models import Variation
 from orders.models import Order, OrderProduct, Payment
 from .forms import OrderForm
 # Create your views here.
@@ -46,6 +48,12 @@ def payments(request):
         orderproduct.ordered = True
         orderproduct.save()
 
+        # add product Variation in order product
+        cart_item = CartItem.objects.get(id=item.id)
+        product_variation = cart_item.variations.all()
+        orderproduct = OrderProduct.objects.get(id=orderproduct.id)
+        orderproduct.variations.set(product_variation)
+        orderproduct.save()
     return render(request, 'orders/payments.html')
 
 # Place order details
