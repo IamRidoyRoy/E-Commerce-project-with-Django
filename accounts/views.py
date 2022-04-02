@@ -124,7 +124,7 @@ def login(request):
             auth.login(request, user)
             # messages.success(request, 'You are logged in')
             # ?next=/cart/checkout/ - to redirect next page
-            url = request.META.get('HTTP_REFERER')
+            url = request .META.get('HTTP_REFERER')
             try:
                 query = requests.utils.urlparse(url).query
                 params = dict(x.split('=') for x in query.split('&'))

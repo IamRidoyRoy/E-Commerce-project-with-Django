@@ -5,11 +5,8 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 import datetime
 import json
-from flask import request
-from itsdangerous import json
-
 from carts.models import CartItem
-from mystore.models import Variation
+from mystore.models import Product, Variation
 from orders.models import Order, OrderProduct, Payment
 from .forms import OrderForm
 # Create your views here.
@@ -54,6 +51,15 @@ def payments(request):
         orderproduct = OrderProduct.objects.get(id=orderproduct.id)
         orderproduct.variations.set(product_variation)
         orderproduct.save()
+
+        # Reduce the quantity of sold product
+        product = Product.objects.get(id=item.product_id)
+        product.stock -= item.quantity
+        product.save()
+
+    # Clear data from cart item
+    CartItem.objects.filter(user=request.user).delete()
+
     return render(request, 'orders/payments.html')
 
 # Place order details
