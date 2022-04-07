@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import dj_database_url
 from django.contrib.messages import constants as messages
 from pathlib import Path
 
@@ -90,6 +91,21 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# New PostgreSql Database
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'test',
+#         'USER': 'postgres',
+#         'PASSWORD': '!@#123Hridoy11',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
